@@ -16,6 +16,9 @@ export async function createCommunity(
   bio: string,
   createdById: string // Change the parameter name to reflect it's an id
 ) {
+  // --- 调试日志 1: 确认函数是否被调用 ---
+  console.log(`【后端日志】createCommunity Action 被调用, 接收到的社区ID是: ${id}`);
+
   try {
     connectToDB();
 
@@ -34,8 +37,14 @@ export async function createCommunity(
       bio,
       createdBy: user._id, // Use the mongoose ID of the user
     });
+    // --- 调试日志 2: 确认即将保存的数据是否正确 ---
+    console.log("【后端日志】社区数据即将保存到数据库:", JSON.stringify(newCommunity, null, 2));
+
 
     const createdCommunity = await newCommunity.save();
+
+    // --- 调试日志 3: 确认数据已成功保存 ---
+    console.log("【后端日志】社区已成功保存到数据库！");
 
     // Update User model
     user.communities.push(createdCommunity._id);
@@ -44,6 +53,8 @@ export async function createCommunity(
     return createdCommunity;
   } catch (error) {
     // Handle any errors
+    // --- 调试日志 4: 捕获并打印任何可能发生的错误 ---
+    console.error("【后端日志】创建社区时发生严重错误:", error);
     console.error("Error creating community:", error);
     throw error;
   }
@@ -51,6 +62,7 @@ export async function createCommunity(
 
 export async function fetchCommunityDetails(id: string) {
   try {
+
     connectToDB();
 
     const communityDetails = await Community.findOne({ id }).populate([

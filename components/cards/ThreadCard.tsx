@@ -1,3 +1,4 @@
+import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -37,6 +38,7 @@ const ThreadCard = (
         comments,
         isComment,
     }: Props) => {
+    
     return (
         <article className={`flex w-full flex-col rounded-xl  ${isComment ? 'px-0 xs:px-7' : 'bg-dark-2 p-7'}`}>
             {/* 1. 这是主 Flex 容器，直接包含左右两栏 */}
@@ -87,6 +89,30 @@ const ThreadCard = (
                 </div>
 
             </div>
+            {!isComment && (
+                <div className="mt-5 flex items-center gap-2">
+                    {/* 无条件为所有主帖子显示时间 */}
+                    <p className="text-subtle-medium text-gray-1">
+                        {formatDateString(createdAt)}
+                    </p>
+
+                    {/* 仅在社区存在时，才显示社区链接 */}
+                    {community && (
+                        <Link href={`/communities/${community.id}`} className="flex items-center gap-1">
+                            <p className="text-subtle-medium text-gray-1">
+                                - {community.name} Community
+                            </p>
+                            <Image
+                                src={community.image}
+                                alt={community.name}
+                                width={14}
+                                height={14}
+                                className="rounded-full object-cover"
+                            />
+                        </Link>
+                    )}
+                </div>
+            )}
         </article>
     )
 }

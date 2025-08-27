@@ -18,6 +18,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     const thread = await fetchThreadById(id);
     if (!thread) return null;
 
+    
     return (
         <section className="relative">
             <div>
@@ -29,7 +30,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     content={thread.text}
                     author={thread.author}
                     community={thread.community}
-                    createdAt={thread.createdAt}
+                    createdAt={thread.createdAt.toISOString()} 
                     comments={thread.children}
                 />
             </div>
@@ -48,7 +49,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                             content={childItem.text}
                             author={childItem.author}
                             community={childItem.community}
-                            createdAt={childItem.createdAt}
+                            createdAt={childItem.createdAt.toISOString()} 
                             comments={childItem.children}
                             isComment
                         />

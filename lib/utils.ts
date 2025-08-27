@@ -21,11 +21,12 @@ export function formatDateString(dateString: string) {
   };
 
   const date = new Date(dateString);
-  const formattedDate = date.toLocaleDateString(undefined, options);
+  const formattedDate = date.toLocaleDateString('en-US', options);
 
-  const time = date.toLocaleTimeString([], {
+  const time = date.toLocaleTimeString('en-US', {
     hour: "numeric",
     minute: "2-digit",
+    hour12: true,
   });
 
   return `${time} - ${formattedDate}`;
